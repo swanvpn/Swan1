@@ -1428,7 +1428,7 @@ async def show_bot_settings(call: types.CallbackQuery):
     )
     @dp.callback_query_handler(text="admin_users")
 
-    @dp.callback_query_handler(text_startswith="admin_users_page_")
+@dp.callback_query_handler(text_startswith="admin_users_page_")
 async def show_users(call: types.CallbackQuery):
     page = int(call.data.split("_")[3])
     per_page = 10
@@ -1469,7 +1469,7 @@ async def show_users(call: types.CallbackQuery):
         keyboard.append(nav_buttons)
 
     await call.message.edit_text(text, reply_markup=InlineKeyboardMarkup(inline_keyboard=keyboard))
-    @dp.callback_query_handler(text_startswith="admin_user_")
+@dp.callback_query_handler(text_startswith="admin_user_")
 async def user_management_menu(call: types.CallbackQuery):
     user_id = call.data.split("_")[2]
     keyboard = InlineKeyboardMarkup(
