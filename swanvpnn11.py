@@ -1372,8 +1372,7 @@ async def main():
     dp.callback_query.register(admin_sales_stats_handler, F.data == "admin_sales_stats")
     dp.callback_query.register(admin_broadcast_start_handler, F.data == "admin_broadcast_start")
     dp.message.register(process_broadcast_handler, PaymentState.broadcasting)
-    @dp.callback_query_handler(text="admin_unanswered")
-    
+    @dp.callback_query_handler(text="admin_unanswered")  
 async def show_unanswered(call: types.CallbackQuery):
     conn = sqlite3.connect("bot_data.db")
     cursor = conn.cursor()
