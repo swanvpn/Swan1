@@ -1,0 +1,7 @@
+Wheel
+PyTelegramBotAPI
+jdatetime
+aiogram==2.25.1
+sqlalchemy
+psycopg2-binary
+aiohttp
