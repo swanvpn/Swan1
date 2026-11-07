@@ -12,9 +12,9 @@ async def health_check(request):
         runner = web.AppRunner(app)
         await runner.setup()
         site = web.TCPSite(runner, '0.0.0.0', port)
-        await site.start()
-        from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey
-        from sqlalchemy.orm import declarative_base, sessionmaker, relationship
+await site.start()
+from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey
+from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 
 from aiogram import Bot, Dispatcher, F, types
 from aiogram.filters import Command
