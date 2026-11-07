@@ -4,4 +4,3 @@ jdatetime
 aiogram==2.25.2
 sqlalchemy
 psycopg2-binary
-aiohttp
