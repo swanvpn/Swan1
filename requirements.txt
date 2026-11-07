@@ -1,7 +1,7 @@
 Wheel
 PyTelegramBotAPI
 jdatetime
-aiogram
+aiogram<3
 sqlalchemy
 psycopg2-binary
 aiohttp
