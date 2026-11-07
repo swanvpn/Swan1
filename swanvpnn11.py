@@ -117,48 +117,56 @@ def get_main_keyboard():
 
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
     
+عذر می‌خوام، مشکل فنی داریم. کد رو اینجا می‌نویسم که بتونی کپی کنی:
+    cursor.execute('''
     CREATE TABLE IF NOT EXISTS bot_settings (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    discount_percent INTEGER DEFAULT 0,
-    card_number TEXT,
-    card_holder TEXT,
-    support_info TEXT
-);
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        discount_percent INTEGER DEFAULT 0,
+        card_number TEXT,
+        card_holder TEXT,
+        support_info TEXT
+    )
+    ''')
 
 def init_db():
-    conn = sqlite3.connect("bot_data.db")
+    conn = sqlite3.connect('bot_data.db')
     cursor = conn.cursor()
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS users (
+        user_id INTEGER PRIMARY KEY,
+        balance INTEGER DEFAULT 0,
+        is_banned INTEGER DEFAULT 0,
+        is_new_user INTEGER DEFAULT 1,
+        purchase_count_current_month INTEGER DEFAULT 0,
+        last_purchase_month TEXT,
+        has_monthly_discount INTEGER DEFAULT 0
+    )
+    ''')
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS services (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        CATEGORY TEXT,
+        NAME TEXT,
+        price INTEGER
+    )
+    ''')
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS requests (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        REQ_TYPE TEXT,
+        plan_name TEXT,
+        status TEXT DEFAULT 'unanswered',
+        Created_AT TEXT,
+        answered_at TEXT,
+        receipt_file_id TEXT
+    )
+    ''')
     
-    cursor.execute('''CREATE TABLE IF NOT EXISTS users (
-                        user_id INTEGER PRIMARY KEY, 
-                        balance INTEGER DEFAULT 0,
-                        is_banned INTEGER DEFAULT 0,
-                        is_new_user INTEGER DEFAULT 1,
-                        purchase_count_current_month INTEGER DEFAULT 0,
-                        last_purchase_month TEXT,
-                        has_monthly_discount INTEGER DEFAULT 0)''')
-                        
-    cursor.execute('''CREATE TABLE IF NOT EXISTS services (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                        category TEXT, 
-                        name TEXT, 
-                        price INTEGER)''')
-                        
-    cursor.execute('''CREATE TABLE IF NOT EXISTS user_configs (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                        user_id INTEGER, 
-                        config_name TEXT, 
-                        config_details TEXT)''')
-    
-    cursor.execute('''CREATE TABLE IF NOT EXISTS requests (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        user_id INTEGER,
-                        req_type TEXT,
-                        plan_name TEXT,
-                        status TEXT DEFAULT 'unanswered',
-                        created_at TEXT,
-                        answered_at TEXT,
-                        receipt_file_id TEXT)''')
+    cursor.execute("PRAGMA table_info(users)")
 
     cursor.execute("PRAGMA table_info(users)")
     user_columns = [info[1] for info in cursor.fetchall()]
