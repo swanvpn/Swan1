@@ -1407,10 +1407,10 @@ async def show_answered(call: types.CallbackQuery):
     await call.message.edit_text(text)
 
     @dp.callback_query_handler(text="admin_edit_card")
-async def start_edit_card(call: types.CallbackQuery):
-    await call.message.edit_text(
-        "شماره کارت جدید را بفرستید:"
-    )  # در پروژه خود وضعیت مناسب را برای ذخیره فعال کنید
+    async def start_edit_card(call: types.CallbackQuery):
+        await call.message.edit_text(
+            "شماره کارت جدید را بفرستید:"
+        )  # در پروژه خود وضعیت مناسب را برای ذخیره فعال کنید
 
 
 @dp.callback_query_handler(text="admin_edit_support")
