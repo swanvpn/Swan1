@@ -1388,9 +1388,7 @@ async def show_unanswered(call: types.CallbackQuery):
     for r in reqs:
         text += f"کد درخواست: {r[0]} | پلن: {r[1]}\n"
     await call.message.edit_text(text)
-
-
-@dp.callback_query_handler(text="admin_answered")
+    @dp.callback_query_handler(text="admin_answered")
 async def show_answered(call: types.CallbackQuery):
     conn = sqlite3.connect("bot_data.db")
     cursor = conn.cursor()
