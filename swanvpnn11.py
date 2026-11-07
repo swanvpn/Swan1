@@ -1,11 +1,12 @@
 import asyncio
 import logging
-import sqlite3
 import os
-from sqlalchemy import create_engine
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone, timedelta
 import jdatetime
 from aiohttp import web
+
+from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey
+from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 
 from aiogram import Bot, Dispatcher, F, types
 from aiogram.filters import Command
@@ -15,7 +16,8 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.exceptions import TelegramBadRequest, TelegramForbiddenError
 
-TOKEN = "9007376692:AAGJGPvs7dJP-USYmdqo7kNAIO4CS7I32HA"
+# تنظیمات اولیه و اتصال به دیتابیس
+TOKEN = os.environ.get("BOT_TOKEN", "").strip()
 CARD_NUMBER = "6219861493813108"
 CARD_HOLDER = "باقرزاده"
 ADMIN_ID = 98695770
@@ -29,6 +31,43 @@ if database_url:
 else:
     engine = create_engine("sqlite:///bot_data.db")
 
+Base = declarative_base()
+
+# مدل‌های دیتابیس
+class User(Base):
+    __tablename__ = 'users'
+    user_id = Column(Integer, primary_key=True)
+    balance = Column(Integer, default=0)
+    is_banned = Column(Boolean, default=False)
+    configs = relationship("UserConfig", backref="user")
+
+class Service(Base):
+    __tablename__ = 'services'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    category = Column(String)
+    name = Column(String)
+    price = Column(Integer)
+
+class UserConfig(Base):
+    __tablename__ = 'user_configs'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey('users.user_id'))
+    config_name = Column(String)
+    config_details = Column(String)
+
+class Request(Base):
+    __tablename__ = 'requests'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer)
+    req_type = Column(String)
+    plan_name = Column(String)
+    status = Column(String, default='unanswered')
+    created_at = Column(String)
+    answered_at = Column(String)
+    receipt_file_id = Column(String)
+
+Base.metadata.create_all(engine)
+SessionLocal = sessionmaker(bind=engine)
 class PaymentState(StatesGroup):
     waiting_for_receipt = State()
     replying_to_user = State()
