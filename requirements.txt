@@ -1,7 +1,5 @@
-Wheel
-PyTelegramBotAPI
-jdatetime
-aiogram==2.25.2
-sqlalchemy
+aiogram>=3.13,<4
+aiohttp>=3.9
+sqlalchemy>=2.0
 psycopg2-binary
-aiohttp==3.8.1
+jdatetime
