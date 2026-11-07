@@ -32,7 +32,8 @@ else:
     engine = create_engine("sqlite:///bot_data.db")
 
 Base = declarative_base()
-
+bot = Bot(token=TOKEN)
+dp = Dispatcher(bot, storage=MemoryStorage())
 # مدل‌های دیتابیس
 class User(Base):
     __tablename__ = 'users'
