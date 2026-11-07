@@ -116,8 +116,8 @@ def get_main_keyboard():
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
-
-CREATE TABLE IF NOT EXISTS bot_settings (
+    
+    CREATE TABLE IF NOT EXISTS bot_settings (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     discount_percent INTEGER DEFAULT 0,
     card_number TEXT,
