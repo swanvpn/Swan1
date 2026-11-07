@@ -5,7 +5,7 @@ from datetime import datetime, timezone, timedelta
 import jdatetime
 from aiohttp import web
 async def health_check(request):
-return web.Response(text='OK')
+    return web.Response(text='OK')
 async def run_web_server(app, port):
     runner = web.AppRunner(app)
     await runner.setup()
