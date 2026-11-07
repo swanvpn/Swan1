@@ -6,13 +6,13 @@ import jdatetime
 from aiohttp import web
 async def health_check(request):
     return web.Response(text='OK')
-async def run_web_server(app, port):
-    runner = web.AppRunner(app)
-    await runner.setup()
-    site = web.TCPSite(runner, '0.0.0.0', port)
-    await site.start()
-    from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey
-    from sqlalchemy.orm import declarative_base, sessionmaker, relationship
+    async def run_web_server(app, port):
+        runner = web.AppRunner(app)
+        await runner.setup()
+            site = web.TCPSite(runner, '0.0.0.0', port)
+        await site.start()
+        from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey
+        from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 
 from aiogram import Bot, Dispatcher, F, types
 from aiogram.filters import Command
