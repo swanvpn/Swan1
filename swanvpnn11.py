@@ -1373,22 +1373,23 @@ async def main():
     dp.callback_query.register(admin_broadcast_start_handler, F.data == "admin_broadcast_start")
     dp.message.register(process_broadcast_handler, PaymentState.broadcasting)
     @dp.callback_query_handler(text="admin_unanswered")  
-async def show_unanswered(call: types.CallbackQuery):
-    conn = sqlite3.connect("bot_data.db")
-    cursor = conn.cursor()
-    cursor.execute(
-    "SELECT req_id, user_plan FROM requests WHERE status = 'unanswered'"
-    )
-    reqs = cursor.fetchall()
-    conn.close()
-    if not reqs:
-        await call.answer("درخواست پاسخ داده نشده‌ای وجود ندارد.")
-        return
-    text = "لیست درخواست‌های در انتظار:\n"
-    for r in reqs:
-        text += f"کد درخواست: {r[0]} | پلن: {r[1]}\n"
-    await call.message.edit_text(text)
-    @dp.callback_query_handler(text="admin_answered")
+    async def show_unanswered(call: types.CallbackQuery):
+        conn = sqlite3.connect("bot_data.db")
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT req_id, user_plan FROM requests WHERE status = 'unanswered'"
+        )
+        reqs = cursor.fetchall()
+        conn.close()
+        if not reqs:
+            await call.answer("درخواست پاسخ داده نشده‌ای وجود ندارد.")
+            return
+            text = "لیست درخواست‌های در انتظار:\n"
+            for r in reqs:
+                text += f"کد درخواست: {r[0]} | پلن: {r[1]}\n"
+                await call.message.edit_text(text)
+
+@dp.callback_query_handler(text="admin_answered")
 async def show_answered(call: types.CallbackQuery):
     conn = sqlite3.connect("bot_data.db")
     cursor = conn.cursor()
