@@ -1428,72 +1428,72 @@ async def show_bot_settings(call: types.CallbackQuery):
     )
     @dp.callback_query_handler(text="admin_users")
 
-@dp.callback_query_handler(text_startswith="admin_users_page_")
-async def show_users(call: types.CallbackQuery):
-    page = int(call.data.split("_")[3])
-    per_page = 10
-    offset = (page - 1) * per_page
-    conn = sqlite3.connect("bot_data.db")
-    cursor = conn.cursor()
-    cursor.execute(
-        "SELECT user_id, balance FROM users LIMIT ? OFFSET ?", (per_page, offset)
-    )
-    users = cursor.fetchall()
-    cursor.execute("SELECT COUNT(*) FROM users")
-    total_users = cursor.fetchone()[0]
-    conn.close()
-
-    if not users:
-        await call.answer("کاربری در این صفحه وجود ندارد.")
-        return
-
-    text = f"👥 لیست کاربران (صفحه {page}):\n\n"
-    for u in users:
-        text += f"🆔 آیدی: {u[0]} | 💰 موجودی: {u[1]:,}\n"
-
-    keyboard = []
-    nav_buttons = []
-    if page > 1:
-        nav_buttons.append(
-            InlineKeyboardButton(
-                text="⬅️ قبلی", callback_data=f"admin_users_page_{page-1}"
-            )
+    @dp.callback_query_handler(text_startswith="admin_users_page_")
+    async def show_users(call: types.CallbackQuery):
+        page = int(call.data.split("_")[3])
+        per_page = 10
+        offset = (page - 1) * per_page
+        conn = sqlite3.connect("bot_data.db")
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT user_id, balance FROM users LIMIT ? OFFSET ?", (per_page, offset)
         )
-    if offset + per_page < total_users:
-        nav_buttons.append(
-            InlineKeyboardButton(
-                text="بعدی ➡️", callback_data=f"admin_users_page_{page+1}"
-            )
-        )
-    if nav_buttons:
-        keyboard.append(nav_buttons)
+        users = cursor.fetchall()
+        cursor.execute("SELECT COUNT(*) FROM users")
+        total_users = cursor.fetchone()[0]
+        conn.close()
 
-    await call.message.edit_text(text, reply_markup=InlineKeyboardMarkup(inline_keyboard=keyboard))
-@dp.callback_query_handler(text_startswith="admin_user_")
-async def user_management_menu(call: types.CallbackQuery):
-    user_id = call.data.split("_")[2]
-    keyboard = InlineKeyboardMarkup(
-        inline_keyboard=[
-            [
+        if not users:
+            await call.answer("کاربری در این صفحه وجود ندارد.")
+            return
+
+        text = f"👥 لیست کاربران (صفحه {page}):\n\n"
+        for u in users:
+            text += f"🆔 آیدی: {u[0]} | 💰 موجودی: {u[1]:,}\n"
+
+        keyboard = []
+        nav_buttons = []
+        if page > 1:
+            nav_buttons.append(
                 InlineKeyboardButton(
-                    text="💰 تغییر موجودی",
-                    callback_data=f"adjust_bal_{user_id}",
+                    text="⬅️ قبلی", callback_data=f"admin_users_page_{page-1}"
                 )
-            ],
-            [
+            )
+        if offset + per_page < total_users:
+            nav_buttons.append(
                 InlineKeyboardButton(
-                    text="🚫 مسدودسازی / آزادسازی",
-                    callback_data=f"ban_user_{user_id}",
+                    text="بعدی ➡️", callback_data=f"admin_users_page_{page+1}"
                 )
-            ],
-            [
-                InlineKeyboardButton(
-                    text="🔙 بازگشت به لیست",
-                    callback_data="admin_users_page_1",
-                )
-            ],
-        ]
-    )
+            )
+        if nav_buttons:
+            keyboard.append(nav_buttons)
+
+        await call.message.edit_text(text, reply_markup=InlineKeyboardMarkup(inline_keyboard=keyboard))
+    @dp.callback_query_handler(text_startswith="admin_user_")
+    async def user_management_menu(call: types.CallbackQuery):
+        user_id = call.data.split("_")[2]
+        keyboard = InlineKeyboardMarkup(
+            inline_keyboard=[
+                [
+                    InlineKeyboardButton(
+                        text="💰 تغییر موجودی",
+                        callback_data=f"adjust_bal_{user_id}",
+                    )
+                ],
+                [
+                    InlineKeyboardButton(
+                        text="🚫 مسدودسازی / آزادسازی",
+                        callback_data=f"ban_user_{user_id}",
+                    )
+                ],
+                [
+                    InlineKeyboardButton(
+                        text="🔙 بازگشت به لیست",
+                        callback_data="admin_users_page_1",
+                    )
+                ],
+            ]
+        )
     await call.message.edit_text(
         f"👤 مدیریت کاربر: {user_id}\nلطفاً یک عملیات"
         " انتخاب کنید:",
