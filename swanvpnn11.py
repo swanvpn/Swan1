@@ -231,7 +231,6 @@ def calculating_dynamic_price(base_price, is_new_user, has_monthly_discount):
         final_price = final_price * (1 - discount / 100)
 
     return int(final_price)
-```-
 
 async def check_ban(message: types.Message):
     conn = sqlite3.connect("bot_data.db")
