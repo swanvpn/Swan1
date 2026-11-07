@@ -17,7 +17,7 @@ from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.exceptions import TelegramBadRequest, TelegramForbiddenError
 
 # تنظیمات اولیه و اتصال به دیتابیس
-TOKEN = "9007376692:AAGJGPvs7dJP-USYmdqo7kNAIO4CS7I32HA"
+TOKEN = "9090743881:AAEX78oy_ZWi8E9RX4kGWn4YtHdsNTaHipA"
 CARD_NUMBER = "6219861493813108"
 CARD_HOLDER = "باقرزاده"
 ADMIN_ID = 98695770
