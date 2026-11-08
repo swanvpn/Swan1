@@ -1731,4 +1731,3 @@ async def ticket_text_received(message: types.Message, state: FSMContext):
             await relay(message.bot, cid, message, header, markup)
         except Exception as e:  # noqa: BLE001
             logging.warning("ticket notify failed: %s", e)
-
