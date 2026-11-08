@@ -637,7 +637,6 @@ def release_code(session, code_str, user_id):
     if use:
         session.delete(use)
         dc.used_count = max(0, (dc.used_count or 0) - 1)
-        PYEOF
         print("done")
 
 # --------------------------------------------------------------------------
@@ -1732,4 +1731,4 @@ async def ticket_text_received(message: types.Message, state: FSMContext):
             await relay(message.bot, cid, message, header, markup)
         except Exception as e:  # noqa: BLE001
             logging.warning("ticket notify failed: %s", e)
-PYEOF
+
